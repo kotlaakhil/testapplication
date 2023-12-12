@@ -1,0 +1,55 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "RAK_BANK_BUSINESS_FLOW",
+    "version" : "1.0.0",
+    "description" : "RAK_BANK_BUSINESS_FLOW"
+  },
+  "paths" : {
+    "/APP_REVERSAL" : {
+      "post" : {
+        "operationId" : "postAPP_REVERSAL",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful."
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a APP_REVERSAL",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    },
+    "/APP_LiquidateTransfer" : {
+      "post" : {
+        "operationId" : "postAPP_LiquidateTransfer",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful."
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a APP_LiquidateTransfer",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    }
+  },
+  "basePath" : "/rak_bank_business_flow/v1"
+}
