@@ -1,125 +1,57 @@
-<?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.pressassociation.samples</groupId>
-	<artifactId>sample-project</artifactId>
+
+	<groupId>com.iib</groupId> <!-- change it to your preference -->
+	<artifactId>testapplication</artifactId> <!-- change it to your preference -->
 	<version>1.0-SNAPSHOT</version>
-	<!-- Packaging provided by maven plugin (plexus components.xml) -->
-	<packaging>bar</packaging>
-	<name>Decimal</name>
-	<prerequisites>
-		<maven>3.0.3</maven>
-	</prerequisites>
+
 	<properties>
-		<wmb.maven.plugin.version>1.7.1</wmb.maven.plugin.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<ace.executable>C:\Program Files\IBM\ACE\12.0.8.0\ace.cmd</ace.executable>
+		<ace.arg1>mqsicreatebar</ace.arg1>
+		<ace.arg2>-data</ace.arg2>
+		<ace.arg3>/opt/mqsi/ace-12.0.2.0</ace.arg3>
+		<ace.arg4>-b</ace.arg4>
+		<ace.arg5>${project.basedir}\target\SamplApp-1.0.bar</ace.arg5>
+		<ace.arg6>-a</ace.arg6>
+		<ace.arg7>testapplication</ace.arg7>
+		<ace.arg8>SAMPLE</ace.arg8>
 	</properties>
 	<build>
-		<defaultGoal>package</defaultGoal>
 		<plugins>
-			<!-- Release plugin configuration -->
-			<plugin>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.2.2</version>
-				<configuration>
-					<localCheckout>true</localCheckout>
-					<pushChanges>false</pushChanges>
-					<tagNameFormat>v@{project.version}</tagNameFormat>
-				</configuration>
-			</plugin>
-			<!-- Allow embedding of version into .esql or .msgflow -->
-			<plugin>
-				<groupId>com.google.code.maven-replacer-plugin</groupId>
-				<artifactId>replacer</artifactId>
-				<version>1.5.0</version>
-				<executions>
-					<execution>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>replace</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<basedir>${project.build.directory}/generated-sources</basedir>
-					<includes>
-						<include>**/*.esql</include>
-						<include>**/*.msgflow</include>
-					</includes>
-					<delimiters>
-						<delimiter>$</delimiter>
-					</delimiters>
-					<regex>false</regex>
-					<token>BUILD_NUMBER</token>
-					<value>${project.version}</value>
-				</configuration>
-			</plugin>
-			<!-- If using Java then eclipsize java projects to allow artifact resolution -->
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.2.1</version>
+				<version>3.0.0</version>
 				<executions>
 					<execution>
-						<id>prepare-SampleProjectJava</id>
-						<phase>prepare-package</phase>
+						<id>create-bar</id>
+						<phase>package</phase>
 						<goals>
 							<goal>exec</goal>
 						</goals>
 						<configuration>
-							<executable>mvn</executable>
-							<workingDirectory>${project.build.directory}/generated-sources/SampleProjectJava</workingDirectory>
+							<executable>${ace.executable}</executable>
 							<arguments>
-								<argument>eclipse:clean</argument>
-								<argument>eclipse:eclipse</argument>
+								<argument>${ace.arg1}</argument>
+								<argument>${ace.arg2}</argument>
+								<argument>${ace.arg3}</argument>
+								<argument>${ace.arg4}</argument>
+								<argument>${ace.arg5}</argument>
+								<argument>${ace.arg6}</argument>
+								<argument>${ace.arg7}</argument>
 							</arguments>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Configure the eclipse workspace(generated) to look at maven repository -->
-			<plugin>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.9</version>
-				<executions>
-					<execution>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>configure-workspace</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<workspace>${project.build.directory}/generated-sources</workspace>
-				</configuration>
-			</plugin>
-			<!-- Configure WMB Maven Plugin -->
-			<plugin>
-				<groupId>com.pressassociation.maven</groupId>
-				<artifactId>wmb-maven-plugin</artifactId>
-				<version>${wmb.maven.plugin.version}</version>
-				<extensions>true</extensions>
-				<configuration>
-					<bars>
-						<bar>
-							<!-- Classifier of BAR file -->
-							<classifier>core</classifier>
-							<!-- Applications required for BAR file -->
-							<applications>
-								<applications>SampleProject</applications>
-							</applications>
-							<!-- Libraries Required for BAR file -->
-							<libraries>
-								<library>SampleProjectLibrary</library>
-							</libraries>
-							<!-- Other project elements, JAVA; MessageSet etc -->
-							<projects>
-								<project>SampleProjectJava</project>
-								<project>SampleProijectMessageSet</project>
-							</projects>
-						</bar>
-					</bars>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
+
 </project>
